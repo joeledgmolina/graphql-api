@@ -1,6 +1,6 @@
-#graphql-api
+# graphql-api
 
-##Getting Started
+## Getting Started
 
 `cd graphql-api`
 
@@ -10,7 +10,7 @@
 
 You should be able to see the app running at [http://localhost:3000/graphql](http://localhost:3000/graphql)
 
-##Funcionalities
+## Funcionalities
 
 1. Query all Courses, Students and Grades
 2. Query by id a Course, Student and Grade
