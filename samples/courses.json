@@ -1,0 +1,27 @@
+[
+    { 
+        "id": 1, 
+        "name": "DIS 110",
+        "description": "Introduction to DOS"
+    },
+    { 
+        "id": 2, 
+        "name": "DIS 220",
+        "description": "Microcomputer Applications" 
+    },
+    { 
+        "id": 3, 
+        "name": "DIS 330",
+        "description": "Introduction to Windows" 
+    },
+    { 
+        "id": 4, 
+        "name": "DIS 440",
+        "description": "Introduction toDatabase/Access" 
+    },
+    { 
+        "id": 5, 
+        "name": "DIS 550",
+        "description": "Introduction to Spreadsheet/Excel" 
+    }
+]

@@ -1,0 +1,126 @@
+1 - Query all Courses, Students and Grades
+{
+  courses{
+    id
+    name
+    description
+  }
+}
+
+{
+  students{
+    id
+    courseId
+  }
+}
+
+
+{
+  grades{
+    id
+    courseId
+    course {
+      id
+    }
+    studentId
+    student {
+      id
+    }
+    grade
+  }
+}
+
+2 - Query by id a Course, Student and Grade
+
+{
+  course(id:3){
+    id
+    name
+    description
+  }
+}
+
+{
+  student(id: 1){
+    id
+    name
+    lastname
+    courseId
+    course{
+      id
+      name
+      description
+    }
+  }
+}
+
+{
+  grade(id: 5){
+    id
+    courseId
+    course {
+      id
+    }
+    studentId
+    student {
+      id
+    }
+    grade
+  }
+}
+
+3 - Create a Course, Student and Grade
+
+mutation{
+  addCourse(name:"DIS 660", 
+    description:"Nodejs"){
+    name
+    description
+  }
+}
+
+mutation{
+  addStudent(name: "Jon",
+  lastname:"Snow", courseId:6){
+    id
+    name
+    lastname
+    courseId
+    course{
+      id
+      name
+      description
+    }
+  }
+}
+
+mutation{
+  addGrade(courseId:6,
+  studentId:11, grade:"A"){
+    id
+    courseId
+    studentId
+    grade
+  }
+}
+
+4 - Delete a Course, Student and Grade
+
+mutation{
+  deleteCourse(id:3){
+    id
+  }
+}
+
+mutation{
+  deleteStudent(id: 1){
+    id
+  }
+}
+
+mutation{
+  deleteGrade(id: 2){
+    id
+    name
+  }
+}

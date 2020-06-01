@@ -1,0 +1,62 @@
+[
+    { 
+        "id": 1, 
+        "courseId": 1,
+        "studentId": 1,
+        "grade": "A" 
+    },
+    { 
+        "id": 2, 
+        "courseId": 1,
+        "studentId": 2,
+        "grade": "B" 
+    },
+    { 
+        "id": 3, 
+        "courseId": 2,
+        "studentId": 3,
+        "grade": "A" 
+    },
+    { 
+        "id": 4, 
+        "courseId": 2,
+        "studentId": 4,
+        "grade": "B" 
+    },
+    { 
+        "id": 5, 
+        "courseId": 3,
+        "studentId": 5,
+        "grade": "A" 
+    },
+    { 
+        "id": 6, 
+        "courseId": 3,
+        "studentId": 6,
+        "grade": "B" 
+    },
+    { 
+        "id": 7, 
+        "courseId": 4,
+        "studentId": 7,
+        "grade": "A" 
+    },
+    { 
+        "id": 8, 
+        "courseId": 4,
+        "studentId": 8,
+        "grade": "B" 
+    },
+    { 
+        "id": 9, 
+        "courseId": 5,
+        "studentId": 9,
+        "grade": "A" 
+    },
+    { 
+        "id": 10, 
+        "courseId": 5,
+        "studentId": 10,
+        "grade": "B" 
+    }
+]
