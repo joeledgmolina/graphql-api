@@ -140,13 +140,13 @@ const GradeType = require('./types/grades_types');
             }
         },
         deleteGrade: {
-            type: CourseType,
+            type: GradeType,
             description: 'Delete a Grade',
             args: {
                 id: { type: GraphQLInt }
             },
             resolve: (parent, args) => {
-                var deleted = courses[args.id - 1];
+                var deleted = grades[args.id - 1];
                 _.remove(grades,(grade)=>{
                     return grade.id == args.id
                 })
