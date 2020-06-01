@@ -18,4 +18,4 @@ You should be able to see the app running at [http://localhost:3000/graphql](htt
 4. Delete a Course, Student and Grade
 
 
-the folder querys_and_mutations contains contains a file with examples to test functionality
+the folder querys_and_mutations contains a file with examples to test functionality
