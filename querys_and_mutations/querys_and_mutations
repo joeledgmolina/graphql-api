@@ -121,6 +121,5 @@ mutation{
 mutation{
   deleteGrade(id: 2){
     id
-    name
   }
 }

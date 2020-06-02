@@ -4,10 +4,9 @@ const {
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLError
 } = require('graphql');
-
-//const _ = require('lodash');
 
 /**Import data */
 const courses = require('./samples/courses.json');
@@ -50,7 +49,15 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLInt }
             },
-            resolve: (parent, args) => courses.find(course => course.id === args.id)
+            resolve: (parent, args) => {
+                var existCourse = courses.find(course => course.id === args.id);
+                if (existCourse){
+                    return existCourse;
+                }
+                else {
+                    throw new GraphQLError ('No hay un curso registrado con ese id')
+                }
+            }
         },
         student: {
             type: StudentType,
@@ -58,7 +65,16 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLInt }
             },
-            resolve: (parent, args) => students.find(student => student.id === args.id)
+            resolve: (parent, args) => {
+                var existStudent = students.find(student => student.id === args.id);
+                if (existStudent){
+                    return existStudent;
+                }
+                else {
+                    throw new GraphQLError ('No hay un estudiante registrado con ese id')
+                }
+            
+            }
         },
         grade: {
             type: GradeType,
@@ -66,7 +82,15 @@ const RootQueryType = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLInt }
             },
-            resolve: (parent, args) => grades.find(grade => grade.id === args.id)
+            resolve: (parent, args) => {
+                var existGrade = grades.find(grade => grade.id === args.id);
+                if (existGrade){
+                    return existGrade
+                }
+                else {
+                    throw new GraphQLError ('No hay un curso registrado con ese id')
+                }
+            }
         },
     }),
 });

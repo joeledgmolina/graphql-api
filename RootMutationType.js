@@ -4,7 +4,8 @@ const {
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLError
 } = require('graphql');
 
 const _ = require('lodash');
@@ -32,13 +33,24 @@ const GradeType = require('./types/grades_types');
                 description: { type: GraphQLNonNull(GraphQLString) },
             },
             resolve: (parent, args) => {
-                const course = {
-                    id: courses.length + 1,
+                /**Chequeo que no haya dos cursos con el mismo nombre */
+                var duplicateName = courses.find(course => course.name === args.name);
+                if (duplicateName){
+                    throw new GraphQLError ('Ya hay un curso registrado con ese nombre')
+                }
+                else {
+                    var newId = 1 ;
+                    _.each(courses,(aux) =>{
+                        newId = aux.id;
+                    });
+                    const course = {
+                    id: newId + 1,
                     name: args.name,
                     description: args.description
+                    }
+                    courses.push(course)
+                    return course
                 }
-                courses.push(course)
-                return course
             }
         },
         addStudent: {
@@ -53,17 +65,21 @@ const GradeType = require('./types/grades_types');
                 /**Me fijo si existe el curso donde quiero agregar al estudiante */
                 var existCourse = _.find(courses, function (o) {return o.id == args.courseId;});
                 if (existCourse){
-                const student = {
-                    id: students.length + 1,
-                    name: args.name,
-                    lastname: args.lastname,
-                    courseId: args.courseId
-                    }
+                    var newId = 1 ;
+                    _.each(students,(aux) =>{
+                        newId = aux.id;
+                    });
+                    const student = {
+                        id: newId + 1,
+                        name: args.name,
+                        lastname: args.lastname,
+                        courseId: args.courseId
+                        }
                     students.push(student)
                     return student
                 }
                 else {
-                    return null;
+                    throw new GraphQLError ('No hay un curso registrado que se corresponda con courseId')
                 }
             }
         },
@@ -80,16 +96,24 @@ const GradeType = require('./types/grades_types');
                 var existStudent = _.find(students, function (o) {return o.id == args.studentId;});
                 var existCourse = _.find(courses, function (o) {return o.id == args.courseId;});
                 if (existStudent && existCourse){
+                    var newId = 1 ;
+                    _.each(grades,(aux) =>{
+                        newId = aux.id;
+                    });
                     const grade = {
-                    id: grades.length + 1,
+                    id: newId+1,
                     courseId: args.courseId,
                     studentId: args.studentId,
                     grade: args.grade
-                }
+                    }
                 grades.push(grade)
-                return grade}
+                return grade
+                }
+                else if (!existStudent) {
+                    throw new GraphQLError ('No hay un estudiante registrado que se corresponda con studentId')
+                }
                 else {
-                    return null;
+                    throw new GraphQLError ('No hay un curso registrado que se corresponda con courseId')
                 }
             }
         },
@@ -100,18 +124,25 @@ const GradeType = require('./types/grades_types');
                 id: { type: GraphQLInt }
             },
             resolve: (parent, args) => {
+                /**Chequeo si el curso existe */
+                var existCourse = _.find(courses, function (o) {return o.id == args.id;});
                 /**Si el curso no tiene estudiantes puedo eliminarlo */
                 var haveStudent = students.find((student) => student.courseId === args.id);
-                if (!haveStudent){
-                    var deleted = courses[args.id - 1];
-                    _.remove(courses,(course)=>{
-                        return course.id == args.id
-                    })
-                    return deleted
+                if (existCourse){
+                    if (!haveStudent){
+                        _.remove(courses,(course)=>{
+                            return course.id == args.id
+                        })
+                        return existCourse
+                    }
+                    else {
+                        throw new GraphQLError ('El curso que intenta borrar tiene estudiantes asociados')
+                    }
                 }
                 else {
-                    return null;
+                    throw new GraphQLError ('El curso que intenta borrar no esta registrado')
                 }
+                
             }
         },
         deleteStudent: {
@@ -125,16 +156,19 @@ const GradeType = require('./types/grades_types');
                 var existStudent = _.find(students, function (o) {return o.id == args.id;});
                 /**Si el estudiante tiene notas no lo puedo eliminar */
                 var haveGrades = grades.find((grade) => grade.studentId === args.id);
-                if (existStudent && !haveGrades){
-                    var deleted = students[args.id - 1];
-                    _.remove(students,(student)=>{
-                        return student.id == args.id
-                    })
-                    return deleted
-                    
+                if (existStudent){
+                    if (!haveGrades){
+                        _.remove(students,(student)=>{
+                            return student.id == args.id
+                        })
+                        return existStudent
+                    }
+                    else {
+                        throw new GraphQLError ('El estudiante que intenta eliminar tiene notas asociadas')
+                    }
                 }
                 else {
-                    return null;
+                    throw new GraphQLError ('El estudiante que intenta eliminar no esta registrado')
                 }
                 
             }
@@ -146,11 +180,17 @@ const GradeType = require('./types/grades_types');
                 id: { type: GraphQLInt }
             },
             resolve: (parent, args) => {
-                var deleted = grades[args.id - 1];
-                _.remove(grades,(grade)=>{
-                    return grade.id == args.id
-                })
-                return deleted
+                /**Chequeo si existe la nota que quiero eliminar */
+                var existGrade = _.find(grades, function (o) {return o.id == args.id;});
+                if (existGrade){
+                    _.remove(grades,(grade)=>{
+                        return grade.id == args.id
+                    })
+                    return existGrade
+                }
+                else {
+                    throw new GraphQLError ('La nota que intenta borrar no esta registrada')
+                }
             }
         },
     })
